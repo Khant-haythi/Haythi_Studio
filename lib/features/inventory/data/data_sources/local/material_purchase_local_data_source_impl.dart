@@ -21,6 +21,9 @@ class MaterialPurchaseLocalDataSourceImpl
       if (material == null) {
         throw StateError('Material ${purchase.materialId} does not exist.');
       }
+      if (!material.isActive) {
+        throw StateError('Material ${purchase.materialId} is inactive.');
+      }
 
       final supplier = await (_database.select(_database.suppliers)
             ..where((row) => row.id.equals(purchase.supplierId)))

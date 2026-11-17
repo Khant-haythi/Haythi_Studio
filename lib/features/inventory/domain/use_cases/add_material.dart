@@ -7,6 +7,11 @@ class AddMaterial {
   final InventoryRepository _repository;
 
   Future<void> call(MaterialEntity material) async {
+    validate(material);
+    await _repository.addMaterial(material);
+  }
+
+  static void validate(MaterialEntity material) {
     if (material.name.trim().isEmpty) {
       throw ArgumentError.value(material.name, 'name', 'Cannot be empty');
     }
@@ -41,7 +46,5 @@ class AddMaterial {
         'Cannot be negative',
       );
     }
-
-    await _repository.addMaterial(material);
   }
 }

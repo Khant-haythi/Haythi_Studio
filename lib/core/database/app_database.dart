@@ -7,17 +7,28 @@ import '../../features/inventory/data/data_sources/local/tables/materials_table.
 import '../../features/inventory/data/data_sources/local/tables/units_table.dart';
 import '../../features/suppliers/data/data_sources/local/tables/suppliers_table.dart';
 
+import '../../features/products/data/data_sources/local/tables/products_table.dart';
+import '../../features/products/data/data_sources/local/tables/product_materials_table.dart';
+
 part 'app_database.g.dart';
 
 @DriftDatabase(
-  tables: [Categories, Units, Materials, Suppliers, MaterialPurchases],
+  tables: [
+    Categories,
+    Units,
+    Materials,
+    Suppliers,
+    MaterialPurchases,
+    Products,
+    ProductMaterials
+  ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor])
       : super(executor ?? driftDatabase(name: 'haythi_studio'));
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -29,6 +40,13 @@ class AppDatabase extends _$AppDatabase {
           if (from < 2) {
             await migrator.createTable(suppliers);
             await migrator.createTable(materialPurchases);
+          }
+          if (from < 3) {
+            await migrator.addColumn(materials, materials.isActive);
+          }
+          if (from < 4) {
+            await migrator.createTable(products);
+            await migrator.createTable(productMaterials);
           }
         },
         beforeOpen: (details) async {

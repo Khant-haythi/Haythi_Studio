@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:haythi_studio/features/inventory/domain/entities/category_entity.dart';
 import 'package:haythi_studio/features/inventory/domain/entities/material_entity.dart';
+import 'package:haythi_studio/features/inventory/domain/entities/unit_entity.dart';
 import 'package:haythi_studio/features/inventory/domain/repositories/inventory_repository.dart';
 import 'package:haythi_studio/features/inventory/domain/use_cases/add_material.dart';
 import 'package:haythi_studio/features/inventory/domain/use_cases/get_materials.dart';
@@ -86,4 +88,24 @@ class _FakeInventoryRepository implements InventoryRepository {
   Stream<List<MaterialEntity>> watchMaterials() {
     return Stream.value(List.unmodifiable(materials));
   }
+
+  @override
+  Stream<List<MaterialEntity>> watchLowStockMaterials() {
+    return Stream.value(
+      materials.where((material) => material.isLowStock).toList(),
+    );
+  }
+
+  @override
+  Stream<List<MaterialEntity>> watchOutOfStockMaterials() {
+    return Stream.value(
+      materials.where((material) => material.isOutOfStock).toList(),
+    );
+  }
+
+  @override
+  Stream<List<CategoryEntity>> watchCategories() => const Stream.empty();
+
+  @override
+  Stream<List<UnitEntity>> watchUnits() => const Stream.empty();
 }

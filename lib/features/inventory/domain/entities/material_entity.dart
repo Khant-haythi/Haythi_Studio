@@ -10,6 +10,7 @@ class MaterialEntity {
     required this.createdAt,
     required this.updatedAt,
     this.imagePath,
+    this.isActive = true,
   });
 
   final String id;
@@ -20,6 +21,7 @@ class MaterialEntity {
   final double reorderLevel;
   final int averageUnitCost;
   final String? imagePath;
+  final bool isActive;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -37,6 +39,7 @@ class MaterialEntity {
     int? averageUnitCost,
     String? imagePath,
     bool clearImagePath = false,
+    bool? isActive,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -49,6 +52,7 @@ class MaterialEntity {
       reorderLevel: reorderLevel ?? this.reorderLevel,
       averageUnitCost: averageUnitCost ?? this.averageUnitCost,
       imagePath: clearImagePath ? null : imagePath ?? this.imagePath,
+      isActive: isActive ?? this.isActive,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -66,6 +70,7 @@ class MaterialEntity {
             other.reorderLevel == reorderLevel &&
             other.averageUnitCost == averageUnitCost &&
             other.imagePath == imagePath &&
+            other.isActive == isActive &&
             other.createdAt == createdAt &&
             other.updatedAt == updatedAt;
   }
@@ -80,6 +85,7 @@ class MaterialEntity {
         reorderLevel,
         averageUnitCost,
         imagePath,
+        isActive,
         createdAt,
         updatedAt,
       );

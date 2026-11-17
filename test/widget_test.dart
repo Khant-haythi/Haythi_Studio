@@ -1,10 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:haythi_studio/app/app.dart';
+import 'package:haythi_studio/features/inventory/domain/entities/category_entity.dart';
+import 'package:haythi_studio/features/inventory/domain/entities/material_entity.dart';
+import 'package:haythi_studio/features/inventory/domain/entities/unit_entity.dart';
+import 'package:haythi_studio/features/inventory/presentation/providers/inventory_providers.dart';
+
+Widget buildTestApp() {
+  return ProviderScope(
+    overrides: [
+      materialsProvider.overrideWith(
+        (ref) => Stream.value(const <MaterialEntity>[]),
+      ),
+      categoriesProvider.overrideWith(
+        (ref) => Stream.value(const <CategoryEntity>[]),
+      ),
+      unitsProvider.overrideWith(
+        (ref) => Stream.value(const <UnitEntity>[]),
+      ),
+    ],
+    child: const HayThiStudioApp(),
+  );
+}
 
 void main() {
   testWidgets('shows the HayThi Studio dashboard', (tester) async {
-    await tester.pumpWidget(const HayThiStudioApp());
+    await tester.pumpWidget(buildTestApp());
     await tester.pumpAndSettle();
 
     expect(find.text('Dashboard'), findsOneWidget);
@@ -12,12 +34,13 @@ void main() {
   });
 
   testWidgets('switches tabs and opens the add menu', (tester) async {
-    await tester.pumpWidget(const HayThiStudioApp());
+    await tester.pumpWidget(buildTestApp());
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.inventory_2_outlined));
     await tester.pumpAndSettle();
-    expect(find.text('Inventory will be added here.'), findsOneWidget);
+    expect(find.text('No materials yet'), findsOneWidget);
+    expect(find.text('Add New Material'), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.add_circle_outline));
     await tester.pumpAndSettle();

@@ -1,7 +1,10 @@
 import 'package:go_router/go_router.dart';
+import '../features/products/presentation/pages/add_product_screen.dart';
 
 import '../features/dashboard/presentation/pages/dashboard_screen.dart';
 import '../features/inventory/presentation/pages/inventory_screen.dart';
+import '../features/inventory/presentation/pages/add_material_screen.dart';
+import '../features/inventory/presentation/pages/material_details_screen.dart';
 import '../features/orders/presentation/pages/orders_screen.dart';
 import '../features/settings/presentation/pages/more_screen.dart';
 import '../features/settings/presentation/pages/settings_screen.dart';
@@ -18,6 +21,18 @@ abstract final class AppRoutes {
 final GoRouter appRouter = GoRouter(
   initialLocation: AppRoutes.home,
   routes: [
+    GoRoute(
+        path: '/products/new',
+        builder: (context, state) => const AddProductScreen()),
+    GoRoute(
+      path: '/materials/new',
+      builder: (context, state) => const AddMaterialScreen(),
+    ),
+    GoRoute(
+      path: '/materials/:id',
+      builder: (context, state) =>
+          MaterialDetailsScreen(materialId: state.pathParameters['id']!),
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return MainShell(navigationShell: navigationShell);

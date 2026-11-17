@@ -29,6 +29,8 @@ class Materials extends Table {
 
   TextColumn get imagePath => text().nullable()();
 
+  BoolColumn get isActive => boolean().withDefault(const Constant(true))();
+
   DateTimeColumn get createdAt => dateTime().clientDefault(DateTime.now)();
 
   DateTimeColumn get updatedAt => dateTime().clientDefault(DateTime.now)();
